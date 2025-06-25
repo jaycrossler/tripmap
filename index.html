@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Class Vacation Viewer</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/vis-timeline@7.10.5/dist/vis-timeline-graph2d.min.css" />
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:10px; }
+    #map { height: 400px; }
+    #timeline { height: 120px; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 6px; }
+    th { background: #eee; }
+  </style>
+</head>
+<body>
+
+  <h2>Shared Summer Map</h2>
+  <label>Paste Google Sheet URL or ID:
+    <input type="text" id="sheet-url" size="60" placeholder="Google Sheet URL or ID" />
+    <button id="load">Load</button>
+  </label>
+  <label style="margin-left:20px;">
+    <input type="checkbox" id="auto-refresh" />
+    Check for live updates
+  </label>
+
+  <div id="map"></div>
+  <div id="timeline"></div>
+  <table id="log-table">
+    <thead><tr><th>Name</th><th>Location</th><th>From</th><th>To</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/vis-timeline@7.10.5/dist/vis-timeline-graph2d.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
