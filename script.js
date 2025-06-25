@@ -10,8 +10,18 @@ const markers = {};
 let intervalId = null;
 let sheetId = '';
 
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('sheetURL');
+  if (saved) {
+    document.getElementById('sheet-url').value = saved;
+    sheetId = extractSheetId(saved);
+    if (sheetId) fetchAndRenderData();
+  }
+});
+
 document.getElementById('load').onclick = () => {
   const url = document.getElementById('sheet-url').value.trim();
+  localStorage.setItem('sheetURL', url);
   sheetId = extractSheetId(url);
   if (!sheetId) return alert('Invalid Google Sheet URL or ID.');
   fetchAndRenderData();
@@ -19,7 +29,7 @@ document.getElementById('load').onclick = () => {
 
 document.getElementById('auto-refresh').addEventListener('change', function () {
   if (this.checked) {
-    intervalId = setInterval(fetchAndRenderData, 30000); // every 30 seconds
+    intervalId = setInterval(fetchAndRenderData, 30000);
   } else {
     clearInterval(intervalId);
   }
@@ -52,7 +62,7 @@ async function fetchAndRenderData() {
       if (row.name && row.loc) renderRow(row);
     }
   } catch (e) {
-    alert("Failed to fetch or parse sheet. Check if the sheet is published and public.");
+    alert("Failed to fetch or parse sheet. Make sure it is published and publicly viewable.");
     console.error(e);
   }
 }
@@ -70,7 +80,6 @@ function renderRow(row) {
   tr.innerHTML = `<td>${row.name}</td><td>${row.loc}</td><td>${row.from}</td><td>${row.to}</td>`;
   tbody.appendChild(tr);
 
-  // Lookup coordinates
   fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(row.loc)}`)
     .then(r => r.json())
     .then(arr => {
